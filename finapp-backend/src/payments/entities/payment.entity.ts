@@ -1,7 +1,7 @@
 import { Column, Double, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
-export class Payment {
+export abstract class Payment {
     @PrimaryGeneratedColumn("uuid")
     id: string
     @Column()

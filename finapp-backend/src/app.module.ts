@@ -10,9 +10,10 @@ import { InvestmentsModule } from './investments/investments.module';
   imports: [PaymentsModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db.db',
+      database: 'finapp.db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+      logging: true
     }),
     ExpenseModule,
     InvestmentsModule,],

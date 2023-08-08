@@ -4,17 +4,26 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from './entities/payment.entity';
 import { Repository } from 'typeorm';
+import { Expense } from 'src/expense/entities/expense.entity';
+import { ExpenseService } from 'src/expense/expense.service';
 
 @Injectable()
 export class PaymentsService {
 
   constructor(
     @InjectRepository(Payment)
-    private paymentRepository: Repository<Payment>
+    private paymentRepository: Repository<Payment>,
+    private expenseService: ExpenseService
   ){}
 
-  create(createPaymentDto: CreatePaymentDto) {
-    return this.paymentRepository.save(createPaymentDto)
+  async create(createPaymentDto: CreatePaymentDto) {
+    return await this.paymentRepository.save(createPaymentDto)
+    .then((payment) => {
+      if(createPaymentDto.expenseId != null) {
+        this.expenseService.addPayment(createPaymentDto.expenseId, payment)
+      }
+    })
+
   }
 
   findAll() {

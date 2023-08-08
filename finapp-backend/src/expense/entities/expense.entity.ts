@@ -3,7 +3,7 @@ import { Column, Double, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn }
 
 @Entity()
 export class Expense {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string
     @Column()
     type: string

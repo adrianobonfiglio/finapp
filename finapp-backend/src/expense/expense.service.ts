@@ -3,7 +3,12 @@ import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { Expense } from './entities/expense.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
+import { CreatePaymentDto } from 'src/payments/dto/create-payment.dto';
+import { PaymentsService } from 'src/payments/payments.service';
+import { Payment } from 'src/payments/entities/payment.entity';
+import { error } from 'console';
+
 
 @Injectable()
 export class ExpenseService {
@@ -18,7 +23,11 @@ export class ExpenseService {
   }
 
   findAll() {
-    return this.expenseRepository.find()
+    return this.expenseRepository.find({relations: ['payments']})
+  }
+
+  findAllActiveForMonth() {
+    return this.expenseRepository.find({relations: ['payments'], where: {active: true}})
   }
 
   findOne(id: string) {
@@ -26,17 +35,40 @@ export class ExpenseService {
   }
 
   async findExpensePayments(id: string) {
-    const expense = await this.expenseRepository.findOne({relations: ['payments'], where: {id: id}})
-    return expense.payments
-
+    return this.expenseRepository.findOne({relations: ['payments'], where: {id: id}})
   }
 
-  update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    console.log(updateExpenseDto.payments)
+  findExpensePaymentsByMonth(id: string, month: number, year: number){
+    let firstDayOfMonth = new Date(year, month-1, 0)
+    let lastDayOfMonth = new Date(year, month, 0)
+    let expense: Expense
+  
+    return this.expenseRepository.findOne(
+      {
+        relations: ['payments'], 
+        where: {id: id, payments: {
+          date: Between(
+            firstDayOfMonth,
+            lastDayOfMonth
+          )
+        }}
+      }
+      )
+  }
+
+  addPayment(id: string, payment: Payment) {
+    this.findExpensePayments(id).then((expense) => {
+      //expense.payments
+      this.expenseRepository.save(expense)
+    })
+  }
+
+  update(id: string, updateExpenseDto: UpdateExpenseDto) {
     return this.expenseRepository.update(id, updateExpenseDto)
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.expenseRepository.delete(id)
   }
+
 }

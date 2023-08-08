@@ -13,7 +13,7 @@ export class Investment {
     active: boolean
     @Column('double')
     balance: Double
-    @ManyToMany(() => Payment, {cascade: ["insert", "update"]})
+    @ManyToMany(() => Payment, {cascade: ['insert', 'update', 'soft-remove']})
     @JoinTable()
     payments: Payment[]
 
