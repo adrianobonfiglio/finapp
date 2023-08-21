@@ -6,6 +6,7 @@ import { Payment } from './entities/payment.entity';
 import { Repository } from 'typeorm';
 import { Expense } from 'src/expense/entities/expense.entity';
 import { ExpenseService } from 'src/expense/expense.service';
+import { InvestmentsService } from 'src/investments/investments.service';
 
 @Injectable()
 export class PaymentsService {
@@ -13,7 +14,8 @@ export class PaymentsService {
   constructor(
     @InjectRepository(Payment)
     private paymentRepository: Repository<Payment>,
-    private expenseService: ExpenseService
+    private expenseService: ExpenseService,
+    private investimentService: InvestmentsService
   ){}
 
   async create(createPaymentDto: CreatePaymentDto) {
@@ -21,6 +23,8 @@ export class PaymentsService {
     .then((payment) => {
       if(createPaymentDto.expenseId != null) {
         this.expenseService.addPayment(createPaymentDto.expenseId, payment)
+      }else if(createPaymentDto.investmentId != null) {
+        this.investimentService.addPayment(createPaymentDto.investmentId, payment)
       }
     })
 

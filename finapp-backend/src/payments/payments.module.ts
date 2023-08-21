@@ -12,6 +12,6 @@ import { InvestmentsModule } from 'src/investments/investments.module';
 @Module({
   controllers: [PaymentsController],
   providers: [PaymentsService], 
-  imports: [TypeOrmModule.forFeature([Payment]), ExpenseModule]
+  imports: [TypeOrmModule.forFeature([Payment]), ExpenseModule, InvestmentsModule]
 })
 export class PaymentsModule {}

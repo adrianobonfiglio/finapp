@@ -7,6 +7,7 @@ import { Investment } from './entities/investment.entity';
 @Module({
   controllers: [InvestmentsController],
   providers: [InvestmentsService],
+  exports: [InvestmentsService],
   imports: [TypeOrmModule.forFeature([Investment])]
 })
 export class InvestmentsModule {}

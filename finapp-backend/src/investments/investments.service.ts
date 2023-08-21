@@ -28,7 +28,7 @@ export class InvestmentsService {
 
   async findInvestmenetPayments(id: string) {
     const investment = await this.investmentRepository.findOne({relations: ['payments'], where: {id: id}})
-    return investment
+    return investment.payments
   }
 
   update(id: string, updateInvestmentDto: UpdateInvestmentDto) {

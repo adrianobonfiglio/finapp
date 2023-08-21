@@ -24,7 +24,7 @@
       <div class="my-4"></div>
     </aside>
     <main class="main -ml-48 flex flex-grow flex-col p-2 transition-all duration-150 ease-in md:ml-0">
-      <div class="flex h-full justify-center bg-white text-center font-bold shadow-md">
+      <div class="flex h-full bg-white text-center font-bold shadow-md">
         <slot></slot>
       </div>
     </main>

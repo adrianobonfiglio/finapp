@@ -10,6 +10,7 @@
 
   <script lang="ts">
 	import Form from "../../components/expenses/form.svelte";
+	import type { Expense } from "../../models/expense";
 	import { ExpensesReposiotry } from "../../repositories/exepensesRepository";
 
     let showModal = false
@@ -17,7 +18,7 @@
     let expense = {} as Expense
     let expensesRepository = new ExpensesReposiotry()
 
-    async function updateExpense(id: string) {
+    async function updateExpense(id: number) {
         expense = await expensesRepository.getOne(id)
         showModal = true
     }
@@ -26,7 +27,7 @@
         expenses = await expensesRepository.getAll()
     };
 
-    const removeExpense = async (id:string) => {
+    const removeExpense = async (id:Number) => {
         //await expensesRepository.removeExpense(id)
         getExepenses()
     }
@@ -56,6 +57,10 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-white text-left text-xs text-gray-600 uppercase tracking-wider">
+                                Description
+                            </th>                            
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-white text-left text-xs text-gray-600 uppercase tracking-wider">
                                 Due Day
                             </th>
                             <th
@@ -72,9 +77,10 @@
                         {#each expenses as exp, i}
                             <tr class="bg-white">                           
                                 <td>{exp.type}</td>
+                                <td>{exp.description}</td>
                                 <td>{exp.dueDay}</td>
                                 <td>{exp.value}</td>
-                                <td><a href="/" on:click|preventDefault={updateExpense(exp.id)}>Edit</a> | <a href="/" on:click|preventDefault={removeExpense(exp.id)}>Remove</a></td>
+                                <td><a href="/" on:click|preventDefault={updateExpense(exp.ID)}>Edit</a> | <a href="/" on:click|preventDefault={removeExpense(exp.ID)}>Remove</a></td>
                             </tr>   
                         {/each}
                     </tbody>

@@ -1,6 +1,7 @@
 <!-- component -->
 <!-- Code block starts -->
 <script lang='ts'>
+	import type { Expense } from "../../models/expense";
 	import { ExpensesReposiotry } from "../../repositories/exepensesRepository";
     import { createEventDispatcher } from 'svelte';
     
@@ -16,7 +17,7 @@
     async function handleSubmit(e: SubmitEvent) {
         expense.active = true
         console.log(JSON.stringify(expense))
-        if(expense.id != null) {
+        if(expense.ID != null) {
             sendUpdate()
         }else {
             sendCreate()
@@ -27,7 +28,7 @@
         expensesRepository.create(expense)
         .then((exp) => {
             dialog.close()
-            alert("Expense with ID "+exp.id+" criada")
+            alert("Expense with ID "+exp.ID+" criada")
             dispatch('reload')
         })
         .catch((error) => {
@@ -39,7 +40,7 @@
         expensesRepository.update(expense)
         .then((exp) => {
             dialog.close()
-            alert("Expense with ID "+exp.id+" criada")
+            alert("Expense with ID "+exp.ID+" atualizada")
             dispatch('reload')
         })
         .catch((error) => {
@@ -72,6 +73,10 @@
                   <option value="PHONE">PHONE</option>
                   <option value="RENT">RENT</option>
                   <option value="FOOD">FOOD</option>
+                  <option value="FOOD">WATER</option>
+                  <option value="FOOD">INTERNET</option>
+                  <option value="FOOD">CAR</option>
+                  <option value="FOOD">INSURANCE</option>
                 </select>
               </div>
               <div class="">
@@ -79,7 +84,7 @@
                 <input id="description" name="description"
                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text" placeholder="Enter description"
-                  bind:value={expense.type}>
+                  bind:value={expense.description}>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Due Day:</label>

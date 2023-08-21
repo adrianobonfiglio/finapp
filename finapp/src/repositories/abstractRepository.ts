@@ -1,22 +1,38 @@
+import type { Expense } from "../models/expense";
 import { RouteConfig } from "../routes/route-config";
 
 export abstract class AbstractRepository<T> {
 
     abstract url:string
+    authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI2MzAyNjUsInVzZXJfaWQiOjF9.o0UzG4YDzduLYiEhqngfLIELT2sLPoAwIDMrDxADgP4"
 
     async getAll(): Promise<T[]> {
-        const response = await fetch(RouteConfig.HOST_URL+this.url);
+        const response = await fetch(RouteConfig.HOST_URL+this.url, {
+            headers: {
+                'Authorization': this.authorization
+            }
+        });
+        if(response.status == 401) {
+            throw Error()
+        }
         return await response.json();
     };
 
-    async getOne(id: string): Promise<T> {
-        let response = await fetch(RouteConfig.HOST_URL+this.url+id)
+    async getOne(id: number): Promise<T> {
+        let response = await fetch(RouteConfig.HOST_URL+this.url+"/"+id, {
+            headers: {
+                'Authorization': this.authorization
+            }
+        })
          return await response.json() as T
     }
 
-    async remove(id: string) {
+    async remove(id: number) {
         const res = await fetch(RouteConfig.HOST_URL+this.url+id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': this.authorization
+            }
         })
     }
 
@@ -24,7 +40,8 @@ export abstract class AbstractRepository<T> {
         const res = await fetch(RouteConfig.HOST_URL+'/expenses', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': this.authorization
             },
             body: JSON.stringify(entity),
         })
@@ -37,10 +54,12 @@ export abstract class AbstractRepository<T> {
     }
 
     async update(entity: Expense) : Promise<Expense> {
-        const res = await fetch(RouteConfig.HOST_URL+this.url+entity.id, {
-            method: 'PATCH',
+        const res = await fetch(RouteConfig.HOST_URL+this.url+"/"+entity.ID, {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': this.authorization
+                
             },
             body: JSON.stringify(entity),
         })

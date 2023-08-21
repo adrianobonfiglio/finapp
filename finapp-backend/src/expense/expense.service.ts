@@ -58,7 +58,7 @@ export class ExpenseService {
 
   addPayment(id: string, payment: Payment) {
     this.findExpensePayments(id).then((expense) => {
-      //expense.payments
+      expense.payments.push(payment)
       this.expenseRepository.save(expense)
     })
   }
