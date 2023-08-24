@@ -2,7 +2,6 @@ package expenses
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"test/app/common"
 	"test/app/models"
@@ -41,9 +40,7 @@ func update(id uint, expense Expense) (*Expense, error) {
 
 func getExepensesPaymentsByMonth(month int, year int) []Expense {
 	firstMonthDay := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
-	fmt.Println(firstMonthDay)
 	lastMonthDay := firstMonthDay.AddDate(0, 1, -1)
-	fmt.Println(firstMonthDay, lastMonthDay)
 	var expenses []Expense
 	db := common.OpenDB()
 

@@ -4,7 +4,9 @@ import (
 	"log"
 	"net/http"
 	"test/app/common"
+	"test/app/dashboard"
 	"test/app/expenses"
+	"test/app/income"
 	"test/app/models"
 	"test/app/payments"
 	"test/app/users"
@@ -32,6 +34,14 @@ func main() {
 	//USERS
 	r.HandleFunc("/auth", users.Authenticate).Methods("POST")
 
+	//INCOME
+	r.HandleFunc("/incomes", income.GetAllHandler).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/incomes", income.CreateHandler).Methods(http.MethodPost, http.MethodOptions)
+	r.HandleFunc("/incomes/{id}", income.EditHandler).Methods(http.MethodPut, http.MethodOptions)
+
+	//DASHBOARD
+	r.HandleFunc("/dashboard/month-spend", dashboard.FindMonthSpend).Methods(http.MethodGet, http.MethodOptions)
+
 	r.Use(common.CorsHandler, common.LoginHandler)
 
 	srv := &http.Server{
@@ -41,7 +51,7 @@ func main() {
 
 	db := common.OpenDB()
 
-	db.AutoMigrate(&models.Expense{}, &models.Payment{}, &users.User{})
+	db.AutoMigrate(&models.Expense{}, &models.Payment{}, &users.User{}, &models.Income{})
 	users.CreateBaseUsers()
 
 	log.Fatal(srv.ListenAndServe())
