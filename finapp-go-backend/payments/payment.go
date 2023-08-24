@@ -5,6 +5,7 @@ import (
 	"log"
 	"test/app/common"
 	"test/app/models"
+	"time"
 )
 
 type Payment struct {
@@ -17,6 +18,13 @@ func getAll() []Payment {
 	db.Find(&payments)
 
 	return payments
+}
+
+func GetTotalSpendByMonth(firMonthDay, lastMonthDay time.Time) float32 {
+	db := common.OpenDB()
+	var totalSpend float32
+	db.Model(&Payment{}).Select("sum(value)").Where("updated_at > ? and updated_at < ?", firMonthDay, lastMonthDay).Find(&totalSpend)
+	return totalSpend
 }
 
 func save(payment Payment) {

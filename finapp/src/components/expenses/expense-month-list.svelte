@@ -1,7 +1,8 @@
 <!-- component -->
 
 <script lang='ts'>
-	import type { Expense } from "../../models/expense";
+	import { DollarConversion } from "../../common/moneyConversion";
+import type { Expense } from "../../models/expense";
 	import type { Payment } from "../../models/payment";
 	import { ExpensesReposiotry } from "../../repositories/exepensesRepository";
 
@@ -59,9 +60,6 @@
         <div>
             <h3 class="mb-2 text-xl font-bold text-gray-900">Expenses</h3>
         </div>
-        <div class="flex">
-            {expenses.length}
-        </div>
     </div>
     
     <div class="flex flex-col mt-8">
@@ -101,7 +99,7 @@
                                         {expense.dueDay}
                                     </td>
                                     <td class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap">
-                                        {expense.value}
+                                        {DollarConversion.format(expense.value)}
                                     </td>
                                     <td class="p-4 whitespace-nowrap">
                                         {#if getPayment(expense)}
