@@ -89,12 +89,18 @@ func EditHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 	var expense Expense
 	err := json.NewDecoder(r.Body).Decode(&expense)
 	if err != nil {
 		log.Print(err)
 	}
-	save(expense)
+	json, err := json.Marshal(save(expense))
+	if err != nil {
+		http.Error(w, "", http.StatusUnprocessableEntity)
+	}
+	w.Write(json)
 }
 
 func DeleteHandler(w http.ResponseWriter, r *http.Request) {
