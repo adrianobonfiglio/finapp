@@ -7,9 +7,14 @@
 
     var monthSpendRepository = new MonthSpendRepository()
     var monthSpend = {} as MonthSpend
+    let month = 0
 
     const getMonthSpend = async () => {
-        monthSpend = await monthSpendRepository.getMonthSpend()
+        monthSpendRepository.getMonthSpend().then(result => {
+            monthSpend = result
+        }).catch(error => {
+            console.log("ERRORORORORO")
+        })
     }
 
     getMonthSpend()

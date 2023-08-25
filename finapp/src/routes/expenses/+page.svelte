@@ -23,12 +23,12 @@
         showModal = true
     }
 
-    const getExepenses = async () => {
+    const getExpenses = async () => {
         expenses = await expensesRepository.getAll()
     };
 
     const removeExpense = async (id:Number) => {
-        //await expensesRepository.removeExpense(id)
+        await expensesRepository.remove(id)
         getExepenses()
     }
 
@@ -37,11 +37,12 @@
         showModal = true
     }
 
-    getExepenses()
+
+    getExpenses()
 
   </script>
 
-<Form bind:showModal on:reload={getExepenses} bind:expense={expense}/>
+<Form bind:showModal on:reload={getExpenses} bind:expense={expense}/>
  
 <div class="container mx-auto px-4 sm:px-4">
     <button on:click={newForm}> show modal </button>
