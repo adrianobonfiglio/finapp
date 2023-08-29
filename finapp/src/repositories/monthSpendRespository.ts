@@ -6,8 +6,8 @@ export class MonthSpendRepository extends AbstractRepository<MonthSpend>{
 
     url = "/dashboard/month-spend"
 
-    async getMonthSpend(): Promise<MonthSpend> {
-        return fetch(RouteConfig.HOST_URL+this.url, {
+    async getMonthSpend(month: number, year: number): Promise<MonthSpend> {
+        return fetch(RouteConfig.HOST_URL+this.url+"?month="+month+"&year="+year, {
             headers: {
                 'Authorization': this.authorization
             }
