@@ -1,19 +1,18 @@
 <script lang="ts">
 	import { DollarConversion } from "../common/moneyConversion";
-	import type { MonthSpend } from "../models/monthSpend";
+	import type { MonthSpend } from "../models/month-spend";
 	import { MonthSpendRepository } from "../repositories/monthSpendRespository";
 
 
 
     var monthSpendRepository = new MonthSpendRepository()
     var monthSpend = {} as MonthSpend
-    let month = 0
 
     const getMonthSpend = async () => {
         monthSpendRepository.getMonthSpend().then(result => {
             monthSpend = result
         }).catch(error => {
-            console.log("ERRORORORORO")
+            console.log("error")
         })
     }
 

@@ -27,9 +27,9 @@
         expenses = await expensesRepository.getAll()
     };
 
-    const removeExpense = async (id:Number) => {
+    const removeExpense = async (id: number) => {
         await expensesRepository.remove(id)
-        getExepenses()
+        getExpenses()
     }
 
     const newForm = () => {

@@ -4,7 +4,7 @@ import { RouteConfig } from "../routes/route-config";
 export abstract class AbstractRepository<T> {
 
     abstract url:string
-    authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI5MzU2NjcsInVzZXJfaWQiOjF9.POjVtaTKsm9QI9dwGzI-VW8P7TQLqXy9QMuiJIqF4sA"
+    authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTMyODYxOTYsInVzZXJfaWQiOjF9.ub5NTKwF10XZu9oUPlGtqQWtM_f1UR8EaEV-NFLbB8E"
 
     async getAll(): Promise<T[]> {
         const response = await fetch(RouteConfig.HOST_URL+this.url, {

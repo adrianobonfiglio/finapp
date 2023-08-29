@@ -2,34 +2,23 @@
 
 <script lang='ts'>
 	import { DollarConversion } from "../../common/moneyConversion";
-import type { Expense } from "../../models/expense";
-	import type { Payment } from "../../models/payment";
+    import type { Expense } from "../../models/expense";
 	import { ExpensesReposiotry } from "../../repositories/exepensesRepository";
-
-    interface MonthYear {
-        num : number
-        name: string
-        year: number
-    }
+	import { DashboardStore } from "../../routes/dashboard/dashboard-store";
 
     let expensesRepository = new ExpensesReposiotry()
     let expenses:Expense[] = []
-    let month = 0
-    let monthList: MonthYear[] = []
-    let expensesSum = 0
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-    ];
-
+    export let selectedMonth: MonthYear
 
     const getExpenses = async () => {
-        let selectedMonth = monthList[month]
         expenses = await expensesRepository.getExpensesWithPaymentsByMonth(selectedMonth.num, selectedMonth.year)
     }
 
-    const changeMonth = () => {
+    DashboardStore.monthYear.subscribe((monthYear) => {
+        selectedMonth = monthYear
         getExpenses()
-    }
+    })
+    
 
     const getPayment = (expense: Expense): Number | null => {
         if(expense.payments.length > 0) {
@@ -38,19 +27,7 @@ import type { Expense } from "../../models/expense";
         return null
     }
 
-    const getMonths = () => {
-        let d = new Date()
-        let thisMonth = d.getMonth()
-        for (let i = 0; i < 12; i++) {
-            d = new Date()
-            d.setMonth(thisMonth - i)
-            let m = d.getMonth()
-            monthList[i] = {num:d.getMonth()+1, name: monthNames[m], year: d.getFullYear()}
-        }
-    }
-
-    getMonths()
-    getExpenses( )
+    getExpenses()
 
 </script>
 
@@ -124,24 +101,6 @@ import type { Expense } from "../../models/expense";
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="flex justify-between items-center pt-3 sm:pt-6">
-        <div>
-            <div class="z-50 my-4 p-1 text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg shadow-gray-200" id="transactions-dropdown">
-                <select bind:value={month} on:change={changeMonth}>
-                    {#each monthList as month, i}
-                        <option value="{i}">{month.name}/{month.year}</option>
-                    {/each}
-                </select>
-            </div>
-        </div>
-        <div class="flex-shrink-0">
-            <a href="/expenses" class="inline-flex items-center p-2 text-xs font-medium text-gray-900 uppercase rounded-lg sm:text-sm hover:bg-gray-100">
-                View all
-                <svg class="ml-1 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-            </a>
         </div>
     </div>
 </div>

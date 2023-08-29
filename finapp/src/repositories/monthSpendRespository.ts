@@ -1,4 +1,4 @@
-import type { MonthSpend } from "../models/MonthSpend";
+import type { MonthSpend } from "../models/month-spend";
 import { RouteConfig } from "../routes/route-config";
 import { AbstractRepository } from "./abstractRepository";
 
