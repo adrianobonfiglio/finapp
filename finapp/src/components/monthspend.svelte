@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DollarConversion } from "../common/moneyConversion";
-	import type { MonthSpend } from "../models/monthSpend";
+	import type { MonthSpend } from "../models/month-spend";
 	import { MonthSpendRepository } from "../repositories/monthSpendRespository";
 
 
@@ -9,7 +9,11 @@
     var monthSpend = {} as MonthSpend
 
     const getMonthSpend = async () => {
-        monthSpend = await monthSpendRepository.getMonthSpend()
+        monthSpendRepository.getMonthSpend().then(result => {
+            monthSpend = result
+        }).catch(error => {
+            console.log("error")
+        })
     }
 
     getMonthSpend()

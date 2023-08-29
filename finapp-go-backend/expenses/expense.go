@@ -20,9 +20,10 @@ func getAll() []Expense {
 	return expenses
 }
 
-func save(expense Expense) {
+func save(expense Expense) Expense {
 	db := common.OpenDB()
-	db.Create(&expense)
+	db.Save(&expense)
+	return expense
 }
 
 func update(id uint, expense Expense) (*Expense, error) {

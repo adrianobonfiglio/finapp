@@ -16,7 +16,6 @@
 
     async function handleSubmit(e: SubmitEvent) {
         expense.active = true
-        console.log(JSON.stringify(expense))
         if(expense.ID != null) {
             sendUpdate()
         }else {
